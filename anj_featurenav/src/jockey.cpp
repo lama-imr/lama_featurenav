@@ -82,6 +82,7 @@ Jockey::Jockey(const std::string& name) :
   }
   else if (descriptor_extractor_type_ == "SURF")
   {
+    throw ros::InvalidParameterException("SURF algorithm is nonfree, cf. anj_featurenav_nonfree package");
   }
   else if (descriptor_extractor_type_ == "ORB")
   {
@@ -166,7 +167,7 @@ void Jockey::initDetectorStar()
   feature_detector_code_ = "star";
 }
 
-/* Initialize feature detector with AAA algorithm
+/* Initialize feature detector with Orb algorithm
 */
 void Jockey::initDetectorOrb()
 {
@@ -273,7 +274,7 @@ void Jockey::initExtractorOrb()
   descriptor_extractor_code_ = "orb";
 }
 
-/* Initialize feature extractor with AAA algorithm
+/* Initialize feature extractor with Brief algorithm
 */
 void Jockey::initExtractorBrief()
 {
