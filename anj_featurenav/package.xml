@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>anj_featurenav</name>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <description>The anj_featurenav package provides a learning jockey and a
     navigating jockey for the Large Maps framework (LaMa). It learns a
     path by saving image features and is able to follow the same path.
