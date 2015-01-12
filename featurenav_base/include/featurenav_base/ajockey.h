@@ -110,9 +110,9 @@ class AJockey : public lama_jockeys::LearningJockey
 
     /* Return a DescriptorLink with the given id
      */
-    inline lama_interfaces::DescriptorLink segmentDescriptorLink(const int32_t id)
+    inline lama_msgs::DescriptorLink segmentDescriptorLink(const int32_t id)
     {
-      lama_interfaces::DescriptorLink descriptor_link;
+      lama_msgs::DescriptorLink descriptor_link;
       descriptor_link.descriptor_id = id;
       descriptor_link.interface_name = segment_interface_name_;
       return descriptor_link;

@@ -4,7 +4,7 @@
   <version>0.1.0</version>
   <description>The featurenav_base package provides base functionality
     for learning and navigating jockeys based on feature detection for
-    the Large Maps framework (LaMa).
+    the Large Maps Framework (LaMa).
   </description>
 
   <maintainer email="gael.ecorchard@ciirc.cvut.cz">Gaël Ecorchard</maintainer>
@@ -13,10 +13,9 @@
   <license>BSD</license>
 
 
-  <!-- Url tags are optional, but mutiple are allowed, one per tag -->
-  <!-- Optional attribute type can be: website, bugtracker, or repository -->
-  <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/featurenav_base</url> -->
+  <url type="website">http://wiki.ros.org/featurenav_base</url>
+  <url type="repository">https://github.com/lama-imr/lama_featurenav.git</url>
+  <url type="bugtracker">https://github.com/lama-imr/lama_featurenav.git</url>
 
 
   <author email="gael.ecorchard@ciirc.cvut.cz">Gaël Ecorchard</author>

@@ -85,10 +85,26 @@ find_package(OpenCV REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES anj_featurenav
-#  CATKIN_DEPENDS actionlib actionlib_msgs cv_bridge image_transport roscpp rospy rviz sensor_msgs tf_conversions visualization_msgs
-#  DEPENDS system_lib
+  INCLUDE_DIRS
+  include
+
+  # LIBRARIES anj_featurenav
+
+  CATKIN_DEPENDS
+  actionlib
+  actionlib_msgs
+  cv_bridge
+  featurenav_base
+  image_transport
+  roscpp
+  rospy
+  rviz
+  sensor_msgs
+  tf_conversions
+  visualization_msgs
+
+  DEPENDS
+  system_lib
 )
 
 ###########
@@ -139,11 +155,11 @@ target_link_libraries(anj_featurenav
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS anj_featurenav anj_featurenav_node
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+install(TARGETS anj_featurenav
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/
