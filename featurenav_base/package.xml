@@ -15,7 +15,7 @@
 
   <url type="website">http://wiki.ros.org/featurenav_base</url>
   <url type="repository">https://github.com/lama-imr/lama_featurenav.git</url>
-  <url type="bugtracker">https://github.com/lama-imr/lama_featurenav.git</url>
+  <url type="bugtracker">https://github.com/lama-imr/lama_featurenav/issues</url>
 
 
   <author email="gael.ecorchard@ciirc.cvut.cz">Gaël Ecorchard</author>
