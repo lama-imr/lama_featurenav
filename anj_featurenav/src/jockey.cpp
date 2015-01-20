@@ -15,8 +15,7 @@ namespace anj_featurenav
 Jockey::Jockey(const std::string& name) :
   feature_detector_type_("FAST"),
   descriptor_extractor_type_("BRIEF"),
-  /* descriptor_matcher_type_("FlannBased"), */
-  descriptor_matcher_type_("BruteForce"),
+  descriptor_matcher_type_("FlannBased"),
   private_nh_("~"),
   base_name_(name)
 {
@@ -162,8 +161,8 @@ void Jockey::initDetectorStar()
   GET_PARAM_DETECTOR(int, line_threshold_binarized, 8);
   GET_PARAM_DETECTOR(int, suppress_nonmax_size, 5);
 
-  feature_detector_.reset(new cv::StarFeatureDetector(max_size, response_threshold, line_threshold_projected,
-        line_threshold_binarized, suppress_nonmax_size));
+  feature_detector_.reset(new cv::StarFeatureDetector(max_size,
+        response_threshold, line_threshold_projected, line_threshold_binarized, suppress_nonmax_size));
   feature_detector_code_ = "star";
 }
 
@@ -205,8 +204,9 @@ void Jockey::initDetectorMser()
   GET_PARAM_DETECTOR(double, min_margin, 0.003);
   GET_PARAM_DETECTOR(int, edge_blur_size, 5);
 
-  feature_detector_.reset(new cv::MserFeatureDetector(delta, min_area, max_area, max_variation, min_diversity, max_evolution, area_threshold, min_margin,
-        edge_blur_size));
+  feature_detector_.reset(new cv::MserFeatureDetector(delta, min_area,
+        max_area, max_variation, min_diversity, max_evolution, area_threshold,
+        min_margin, edge_blur_size));
   feature_detector_code_ = "mser";
 }
 
@@ -221,7 +221,8 @@ void Jockey::initDetectorGftt()
   GET_PARAM_DETECTOR(double, k, 0.04);
   GET_PARAM_DETECTOR(bool, use_harris_detector, false);
 
-  feature_detector_.reset(new cv::GoodFeaturesToTrackDetector(max_corners, quality_level, min_distance, block_size, use_harris_detector, k));
+  feature_detector_.reset(new cv::GoodFeaturesToTrackDetector(max_corners,
+        quality_level, min_distance, block_size, use_harris_detector, k));
   feature_detector_code_ = "gfft";
 }
 
@@ -237,8 +238,9 @@ void Jockey::initDetectorDense()
   GET_PARAM_DETECTOR(bool, vary_xy_step_with_scale, true);
   GET_PARAM_DETECTOR(bool, vary_img_bound_with_scale, false);
 
-  feature_detector_.reset(new cv::DenseFeatureDetector(init_feature_scale, feature_scale_levels, feature_scale_mul,
-        init_xy_step, init_img_bound, vary_xy_step_with_scale, vary_img_bound_with_scale));
+  feature_detector_.reset(new cv::DenseFeatureDetector(init_feature_scale,
+        feature_scale_levels, feature_scale_mul, init_xy_step, init_img_bound,
+        vary_xy_step_with_scale, vary_img_bound_with_scale));
   feature_detector_code_ = "dense";
 }
 
@@ -320,7 +322,6 @@ void Jockey::initMatcherFlannbased()
 {
   descriptor_matcher_.reset(new cv::FlannBasedMatcher());
   descriptor_matcher_code_ = "flann";
-  /* descriptor_matcher_.reset(cv::DescriptorMatcher::create("FlannBased")); */
 }
 
 void Jockey::extractFeatures(const sensor_msgs::ImageConstPtr& image, vector<KeyPoint>& keypoints, vector<Feature>& descriptors) const

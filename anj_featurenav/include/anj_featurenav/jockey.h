@@ -1,3 +1,101 @@
+/* Implements a feature-based learning and navigating jockey based on free
+ * OpenCV feature descriptor and matcher.
+ * 
+ * The package defines the feature extractor and the feature matcher
+ * functions required by the featurenav_base package to obtain a working couple
+ * learning/navigating jockeys. The words feature and descriptor are used as
+ * synonymous.
+ *
+ * Parameters:
+ * - name, type, default value, description
+ * - ~feature_detector/type, String, "FAST", algorithm for feature detection.
+ *     Can be one of "FAST", "STAR", "ORB", "MSER", "GFTT", "Dense",
+ *     "SimpleBlob". They make use of their corresponding algorithm in the
+ *     OpenCV library (for example "FAST" implies the use of
+ *     "cv::FastFeatureDetector").
+ * - ~descriptor_extractor/type, String, "BRIEF", algorithm for feature
+ *     extraction. Can be one of "ORB", "BRIEF". They make use of their
+ *     corresponding algorithm in the OpenCV library (for example, "BRIEF"
+ *     implies the use of "cv::BriefDescriptorExtractor").
+ * - ~descriptor_matcher/type, String, "FlannBased", algorithm for feature
+ *     matching. Can be one of "BruteForce", "FlannBased". They make use of
+ *     their corresponding algorithm in the OpenCV library (for example,
+ *     "FlannBased" implies the use of "cv::FlannBasedMatcher").
+ *
+ * Parameters for "FAST":
+ * cf. http://docs.opencv.org/modules/features2d/doc/feature_detection_and_description.html#fast
+ * - ~feature_detector/threshold, Int, 1, cf. OpenCV documentation.
+ * - ~feature_detector/nonmax_suppression, Bool, true, cf. OpenCV documentation.
+ *
+ * Parameters for "STAR":
+ * cf. http://docs.opencv.org/modules/features2d/doc/common_interfaces_of_feature_detectors.html?highlight=star#starfeaturedetector
+ * - ~feature_detector/max_size, Int, 16, cf. OpenCV documentation.
+ * - ~feature_detector/response_threshold, Int, 30, cf. OpenCV documentation.
+ * - ~feature_detector/line_threshold_projected, Int, 10, cf. OpenCV documentation.
+ * - ~feature_detector/line_threshold_binarized, Int, 8, cf. OpenCV documentation.
+ * - ~feature_detector/suppress_nonmax_size, Int, 5, cf. OpenCV documentation.
+ *
+ * Parameters for "ORB" (as feature detector):
+ * cf. http://docs.opencv.org/modules/features2d/doc/feature_detection_and_description.html#orb
+ * - ~feature_detector/scale_factor, Float, 1.2, cf. OpenCV documentation.
+ * - ~feature_detector/n_features, Int, 500, cf. OpenCV documentation.
+ * - ~feature_detector/n_levels, Int, 8, cf. OpenCV documentation.
+ * - ~feature_detector/edge_threshold, Int, 31, cf. OpenCV documentation.
+ * - ~feature_detector/first_level, Int, 0, cf. OpenCV documentation.
+ * - ~feature_detector/wta_k, Int, 2, cf. OpenCV documentation.
+ * - ~feature_detector/score_type, Int, 0 (for HARRIS_SCORE), 0 for Harris
+ *     score, 1 for FAST score, cf. OpenCV documentation.
+ * - ~feature_detector/patch_size, Int, 31, cf. OpenCV documentation.
+ *
+ * Parameters for "MSER":
+ * cf. http://docs.opencv.org/modules/features2d/doc/feature_detection_and_description.html#mser
+ * - ~feature_detector/delta, Int, 5, cf. OpenCV documentation.
+ * - ~feature_detector/min_area, Int, 60, cf. OpenCV documentation.
+ * - ~feature_detector/max_area, Int, 14400, cf. OpenCV documentation.
+ * - ~feature_detector/max_variation, Float, 0.25, cf. OpenCV documentation.
+ * - ~feature_detector/min_diversity, Float, 0.2, cf. OpenCV documentation.
+ * - ~feature_detector/max_evolution, Int, 200, cf. OpenCV documentation.
+ * - ~feature_detector/area_threshold, Float, 1.01, cf. OpenCV documentation.
+ * - ~feature_detector/min_margin, Float, 0.003, cf. OpenCV documentation.
+ * - ~feature_detector/edge_blur_size, Int, 5, cf. OpenCV documentation.
+ *
+ * Parameters for "GFTT":
+ * cf. http://docs.opencv.org/modules/features2d/doc/common_interfaces_of_feature_detectors.html?highlight=gftt#goodfeaturestotrackdetector
+ * - ~feature_detector/max_corners, 1000, Int, cf. OpenCV documentation.
+ * - ~feature_detector/block_size, 3, Int, cf. OpenCV documentation.
+ * - ~feature_detector/quality_level, Float, 0.01, cf. OpenCV documentation.
+ * - ~feature_detector/min_distance, Float, 1, cf. OpenCV documentation.
+ * - ~feature_detector/k, Float, 0.04, cf. OpenCV documentation.
+ * - ~feature_detector/use_harris_detector, Bool, false, cf. OpenCV documentation.
+ *
+ * Parameters for "Dense":
+ * cf. http://docs.opencv.org/modules/features2d/doc/common_interfaces_of_feature_detectors.html?highlight=gftt#densefeaturedetector
+ * - ~feature_detector/feature_scale_levels, Int, 1, cf. OpenCV documentation.
+ * - ~feature_detector/init_xy_step, Int, 6, cf. OpenCV documentation.
+ * - ~feature_detector/init_img_bound, Int, 0, cf. OpenCV documentation.
+ * - ~feature_detector/init_feature_scale, Float, 1, cf. OpenCV documentation.
+ * - ~feature_detector/feature_scale_mul, Float, 0.1, cf. OpenCV documentation.
+ * - ~feature_detector/vary_xy_step_with_scale, Bool, true, cf. OpenCV documentation.
+ * - ~feature_detector/vary_img_bound_with_scale, Bool, false, cf. OpenCV documentation.
+ *
+ * Parameters for "ORB" (as feature extractor):
+ * cf. http://docs.opencv.org/modules/features2d/doc/feature_detection_and_description.html#orb
+ * same parameters as "ORB" above but replacing "feature_detector" with "descriptor_extractor"
+ *
+ * Parameters for "BRIEF":
+ * cf. http://docs.opencv.org/modules/features2d/doc/common_interfaces_of_descriptor_extractors.html?highlight=brief#briefdescriptorextractor
+ * - ~descriptor_extractor/bytes, Int, 32, cf. OpenCV documentation.
+ *
+ * Parameters for "FlannBased":
+ * cf. http://docs.opencv.org/modules/features2d/doc/common_interfaces_of_descriptor_matchers.html?highlight=flannbasedmatcher#flannbasedmatcher
+ * none
+ * 
+ * Parameters for "BruteForce":
+ * cf. http://docs.opencv.org/modules/features2d/doc/common_interfaces_of_descriptor_matchers.html#bfmatcher
+ * - ~descriptor_matcher/norm, String, "L2", one of "L1", "L2", "HAMMING", "HAMMING2", cf. OpenCV documentation.
+ * - ~descriptor_matcher/cross_check, Bool, false, cf. OpenCV documentation.
+ */
+
 #ifndef ALJ_FEATURENAV_JOCKEY_H
 #define ALJ_FEATURENAV_JOCKEY_H
 
