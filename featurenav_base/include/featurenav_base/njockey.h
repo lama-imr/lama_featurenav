@@ -25,7 +25,8 @@
 #include <featurenav_base/GetSegment.h>
 #include <featurenav_base/Landmark.h>
 
-namespace featurenav_base {
+namespace featurenav_base
+{
 
 using boost::accumulators::tag::density;
 
@@ -65,7 +66,7 @@ class NJockey : public lama_jockeys::NavigatingJockey
     vector<double> compute_horizontal_differences(const vector<Landmark>& landmarks,
         const vector<cv::KeyPoint>& keypoints, const vector<Feature>& descriptors, const double d);
 
-    /* Return the distance since we started learning.
+    /** Return the distance since we started learning.
      */
     inline double distance_from_start()
     {
@@ -88,30 +89,30 @@ class NJockey : public lama_jockeys::NavigatingJockey
     ros::ServiceClient segment_getter_proxy_;
 
     // ROS parameters (shown outside).
-    double forward_velocity_;  //!> (m/s)
+    double forward_velocity_;  //!< Linear velocity (m/s).
     double kp_;  //!> Proportional factor for the angular velocity (s^-1).
-    double matcher_max_relative_distance_;  //!> A potential descriptor is visible in the new image if
-                                            //!> the distance to the best-match descriptor is smaller than
-                                            //!> the distance to the second best match multiplied by this factor.
-    double max_angular_velocity_;  //!> (rad/s)
-    double min_angular_velocity_;  //!> (rad/s)
+    double matcher_max_relative_distance_;  //!< A potential descriptor is visible in the new image if
+                                            //!< the distance to the best-match descriptor is smaller than
+                                            //!< the distance to the second best match multiplied by this factor.
+    double max_angular_velocity_;  //!< Max. angular velocity (rad/s).
+    double min_angular_velocity_;  //!< Min. angular velocity for dead-zone management (rad/s).
 
     // Hard-coded parameters.
     static const ros::Duration max_odom_age_;
-    static const int histogram_bin_size_;  //!> Histogram bin size in pixels.
-    const static double reach_angular_distance_;  //!> dtheta to reach when turning (rad).
+    static const int histogram_bin_size_;  //!< Histogram bin size in pixels.
+    const static double reach_angular_distance_;  //!< dtheta to reach when turning (rad).
 
     // Internals.
-    std::string segment_interface_name_;  //!> Name of the map interface for segments.
-    std::string segment_getter_name_;  //!> Name of the service to write segments into the map.
+    std::string segment_interface_name_;  //!< Name of the map interface for segments.
+    std::string segment_getter_name_;  //!< Name of the service to write segments into the map.
     feature_extractor_function_ptr extract_features_;
     descriptor_matcher_function_ptr match_descriptors_;
-    nav_msgs::Odometry odom_;  //!> Last received odometry message.
-    bool has_odom_;  //!> true after an Odometry message was received.
-    bool start_angle_reached_;  //!> true after the initial rotation.
-    bool image_processing_running_;  //!> true when treating an image.
-    geometry_msgs::Pose start_pose_;  //!> Pose when learning started.
-    ::featurenav_base::Segment segment_;  //!> Segment we will traverse.
+    nav_msgs::Odometry odom_;  //!< Last received odometry message.
+    bool has_odom_;  //!< true after an Odometry message was received.
+    bool start_angle_reached_;  //!< true after the initial rotation.
+    bool image_processing_running_;  //!< true when treating an image.
+    geometry_msgs::Pose start_pose_;  //!< Pose when learning started.
+    ::featurenav_base::Segment segment_;  //!< Segment we will traverse.
 };
 
 } // namespace featurenav_base

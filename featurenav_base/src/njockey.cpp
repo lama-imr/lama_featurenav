@@ -1,6 +1,7 @@
 #include <featurenav_base/njockey.h>
 
-namespace featurenav_base {
+namespace featurenav_base
+{
 
 const ros::Duration NJockey::max_odom_age_ = ros::Duration(0.5);
 const double NJockey::reach_angular_distance_ = 0.001;  // (rad)
@@ -119,10 +120,16 @@ void NJockey::onTraverse()
   // Waiting for the first odometry message.
   ros::Duration(0.2).sleep();
   ros::spinOnce();
-  while (!has_odom_ && !server_.isPreemptRequested() && ros::ok())
+  while (!has_odom_)
   {
     ros::spinOnce();
     ROS_WARN_STREAM_THROTTLE(5, "Waiting for odometry on topic " << odom_handler_.getTopic());
+
+    if (!ros::ok() || server_.isPreemptRequested())
+    {
+      return;
+    }
+
     ros::Duration(0.01).sleep();
   }
 
@@ -154,7 +161,7 @@ void NJockey::onTraverse()
       ROS_INFO("preempted");
       // set the action state to preempted
       // TODO: should the server be preempted?
-      // server_.setPreempted();
+      server_.setPreempted();
       break;
     }
 
@@ -203,7 +210,9 @@ void NJockey::callback_odom(const nav_msgs::OdometryConstPtr& msg)
   {
     odom_ = *msg;
     has_odom_ = true;
+    return;
   }
+  ROS_WARN("Odometry received but too old (%.3f s)", (ros::Time::now() - msg->header.stamp).toSec());
 }
 
 void NJockey::callback_image(const sensor_msgs::ImageConstPtr& msg)
@@ -234,7 +243,7 @@ void NJockey::callback_image(const sensor_msgs::ImageConstPtr& msg)
   ROS_DEBUG("Computation time: %.3f", (ros::Time::now().toSec() - start_time.toSec()));
 }
 
-/* GoToGoal behavior for pure rotation
+/** GoToGoal behavior for pure rotation
  *
  * direction[in] direction the robot should have at the end (in odometry_ frame).
  * twist[out] set velocity.
@@ -285,7 +294,7 @@ double NJockey::saturate(double w) const
   return w;
 }
 
-/* Return the number of matched landmarks and the angular deviation to learned path
+/** Return the number of matched landmarks and the angular deviation to the learned path
  */
 size_t NJockey::processImage(const sensor_msgs::ImageConstPtr& image, double& dtheta)
 {

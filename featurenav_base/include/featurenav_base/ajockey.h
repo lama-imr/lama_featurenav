@@ -66,7 +66,8 @@
 #include <featurenav_base/Segment.h>
 #include <featurenav_base/SetSegment.h>
 
-namespace featurenav_base {
+namespace featurenav_base
+{
 
 using std::vector;
 using cv::Mat;
@@ -95,7 +96,7 @@ class AJockey : public lama_jockeys::LearningJockey
     void reset();
     size_t processImage(const sensor_msgs::ImageConstPtr& image);
 
-    /* Return the distance since we started learning.
+    /** Return the distance since we started learning.
      */
     inline double distance_from_start()
     {
@@ -108,7 +109,7 @@ class AJockey : public lama_jockeys::LearningJockey
       return std::sqrt(dx * dx + dy * dy);
     }
 
-    /* Return a DescriptorLink with the given id
+    /** Return a DescriptorLink with the given id
      */
     inline lama_msgs::DescriptorLink segmentDescriptorLink(const int32_t id)
     {
@@ -130,28 +131,28 @@ class AJockey : public lama_jockeys::LearningJockey
     ros::ServiceClient segment_setter_proxy_;
 
     // ROS parameters, shown outside.
-    double matcher_max_relative_distance_;  //!> A potential descriptor is visible in the new image if
-                                            //!> the distance to the best-match descriptor is smaller than
-                                            //!> the distance to the second best match multiplied by this factor.
-    double min_landmark_dist_;  //!> A landmark is saved if it was visible on at least such a traveled distance.
-    double max_segment_length_;  //!> The jockey will successfully end the action if the traveled distance is at least this.
-                                 //!> Defaults to 0, which means that the START action never finishes.
+    double matcher_max_relative_distance_;  //!< A potential descriptor is visible in the new image if
+                                            //!< the distance to the best-match descriptor is smaller than
+                                            //!< the distance to the second best match multiplied by this factor.
+    double min_landmark_dist_;  //!< A landmark is saved if it was visible on at least such a traveled distance.
+    double max_segment_length_;  //!< The jockey will successfully end the action if the traveled distance is at least this.
+                                 //!< Defaults to 0, which means that the START action never finishes.
 
     // Hard-coded parameters.
     static const ros::Duration max_odom_age_;
     static const ros::Duration max_landmark_age_;
 
     // Internals.
-    std::string segment_interface_name_;  //!> Name of the map interface for segments.
-    std::string segment_setter_name_;  //!> Name of the service to write segments into the map.
+    std::string segment_interface_name_;  //!< Name of the map interface for segments.
+    std::string segment_setter_name_;  //!< Name of the service to write segments into the map.
     feature_extractor_function_ptr extract_features_;
     descriptor_matcher_function_ptr match_descriptors_;
-    nav_msgs::Odometry odom_;  //!> Last received odometry message.
+    nav_msgs::Odometry odom_;  //!< Last received odometry message.
     bool has_odom_;
-    bool image_processing_running_;  //!> true when treating an image.
-    geometry_msgs::Pose start_pose_;  //!> Pose when learning started.
+    bool image_processing_running_;  //!< true when treating an image.
+    geometry_msgs::Pose start_pose_;  //!< Pose when learning started.
     Segment segment_;
-    std::vector<PotentialLandmark> landmarks_; //!> Potential landmarks (features seen once).
+    std::vector<PotentialLandmark> landmarks_; //!< Potential landmarks (features seen once).
 };
 
 } // namespace featurenav_base

@@ -1,6 +1,7 @@
 #include <featurenav_base/ajockey.h>
 
-namespace featurenav_base {
+namespace featurenav_base
+{
 
 const ros::Duration AJockey::max_odom_age_ = ros::Duration(0.5);
 const ros::Duration AJockey::max_landmark_age_ = ros::Duration(2.0);
@@ -222,7 +223,7 @@ void AJockey::callback_odom(const nav_msgs::OdometryConstPtr& msg)
   ROS_WARN("Odometry received but too old (%.3f s)", (ros::Time::now() - msg->header.stamp).toSec());
 }
 
-/* Process an image and return the number of tracked features.
+/** Process an image and return the number of tracked features.
  *
  *  Return the number of potential features.
  *
